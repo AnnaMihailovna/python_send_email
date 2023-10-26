@@ -1,5 +1,6 @@
 import smtplib
 import os
+from email.mime.text import MIMEText
 
 def send_email(message):
     sender = 'anna.mihailovma@gmail.com'
@@ -11,7 +12,10 @@ def send_email(message):
     server.starttls()
     try:
         server.login(sender, password)
-        server.sendmail(sender, sender, f'Subject: CLICK ME PLEASE!\n{message}')
+        msg = MIMEText(message)
+        server.sendmail(sender, sender, msg.as_string())
+        msg["Subject"] = 'Нажми, плиз!'
+        # server.sendmail(sender, sender, f'Subject: CLICK ME PLEASE!\n{message}')
         return 'The message was sent successfully!'
     except Exception as _ex:
         return f'{_ex}\nCheck your login or password please!'
